@@ -1,4 +1,5 @@
 // Write your code here!
+
 const postList = document.getElementById("post-list");
 
 function displayPosts(posts) {
@@ -19,9 +20,19 @@ function displayPosts(posts) {
 }
 
 async function getPosts() {
-  const posts = await fetch("https://jsonplaceholder.typicode.com/posts");
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts");
 
-  displayPosts(posts);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const posts = await response.json();
+
+    displayPosts(posts);
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+  }
 }
 
 getPosts();
